@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { pdfjs, Document, Page } from 'react-pdf';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
 import './App.css'
 
 function App() {
@@ -11,6 +14,13 @@ function App() {
   const [url, setUrl] = useState("");
   const [choice, setChoice] = useState("");
   const [about, setAbout] = useState("");
+  const [numPages, setNumPages] = useState<number | null>(null);
+  const [pdfUrl, setPdfUrl] = useState("");
+
+  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    'pdfjs-dist/build/pdf.worker.min.mjs',
+    import.meta.url,
+  ).toString();
 
   function submitForm(e: React.FormEvent){
     e.preventDefault();
@@ -27,6 +37,23 @@ function App() {
     setUrl("");
     setAbout("");
   }
+
+  useEffect(()=>{
+    console.log(pdfUrl)
+  },[pdfUrl])
+
+  function onFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const pdfFile = event.target.files?.[0];
+    if (pdfFile) {
+      setFile(pdfFile);
+      setPdfUrl(URL.createObjectURL(pdfFile));
+    }
+  }
+
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+    setNumPages(numPages);
+  }
+
   return (
     <>
       <h1>Form in React</h1>
@@ -48,14 +75,8 @@ function App() {
           Other
           <input type="radio" name="gender" value="other" id="other" checked={gender === "other"} onChange={(e) => setGender(e.target.value)}/>
         </div>
-        <label htmlFor="file">Resume</label>
-        <label htmlFor="file">Upload Resume*</label>
-        <input type="file" name="file" id="file" onChange={(e) => setFile(prev => {
-          if (e.target.files && e.target.files.length) {
-            return e.target.files[0]
-          }
-          return prev
-        })} placeholder='Upload resume' required />
+        <label htmlFor="Upload resume">Upload Resume*</label>
+        <input type="file" name="Upload Resume"accept="application/pdf" onChange={onFileChange} />
         <label htmlFor="url">LinkedIn Profile</label>
         <input type="text" name="url" id="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder='www.linkedin.com/in/user-id'/>
         <label htmlFor="choice">How did you hear about us?</label>
@@ -71,7 +92,16 @@ function App() {
           <button onClick={resetForm}>RESET</button>
         </div>
       </form>
-    
+      {pdfUrl && (
+        <div>
+          <h2>PDF Visualizer</h2>
+          <Document file={pdfUrl} onLoadSuccess={onDocumentLoadSuccess}>
+            {Array.from(new Array(numPages), (el, index) => (
+              <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+            ))}
+          </Document>
+        </div>
+      )}
     </>
 
   )
