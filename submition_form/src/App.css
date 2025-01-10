@@ -5,13 +5,24 @@
 }
 
 body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+  background-color: steelblue;
+  color: #fff;
+  font-family: 'Muli', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
 }
+
+.container {
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 20px 40px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 400px;
+  }
 
 h1, h2{
     text-align: center;
@@ -23,13 +34,6 @@ form{
     display: flex;
     flex-direction: column;
     max-width: 400px;
-}
-
-input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="password"], input[type="file"], select{
-    padding: 0.25rem 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
 }
 
 .genders{
@@ -67,4 +71,19 @@ button:hover{
 
 button:active{
     background-color: #004286;
+}
+
+.labels{
+    margin: 0.5rem 0;
+    font-size: 18px;
+}
+
+input[type="radio"], input[type="file"], select{
+    margin-bottom: 0.5rem;
+}
+
+select{
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }

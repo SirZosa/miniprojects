@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import InputField from './components/input-field/input-field.tsx'
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
@@ -54,41 +55,38 @@ function App() {
   return (
     <>
       <h1>Form in React</h1>
-      <form onSubmit={submitForm}>
-        <label htmlFor="firstName">First Name</label>
-        <input required type="text" id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder='Jonh'/>
-        <label htmlFor="lastName">Last Name</label>
-        <input required type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder='Johnson'/>
-        <label htmlFor="email">Email</label>
-        <input required type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='user@email.com'/>
-        <label htmlFor="phoneNumber">Phone Number</label>
-        <input required type="tel" id="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder='999-999-9999'/>
-        <label htmlFor="gender">Gender</label>
-        <div className="genders">
-          Male
-          <input type="radio" name="gender" value="male" id="male" checked={gender === "male"} onChange={(e) => setGender(e.target.value)}/>
-          Female
-          <input type="radio" name="gender" value="female" id="female" checked={gender === "female"} onChange={(e) => setGender(e.target.value)}/>
-          Other
-          <input type="radio" name="gender" value="other" id="other" checked={gender === "other"} onChange={(e) => setGender(e.target.value)}/>
-        </div>
-        <label htmlFor="Upload resume">Upload Resume*</label>
-        <input type="file" name="Upload Resume"accept="application/pdf" onChange={onFileChange} />
-        <label htmlFor="url">LinkedIn Profile</label>
-        <input type="text" name="url" id="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder='www.linkedin.com/in/user-id'/>
-        <label htmlFor="choice">How did you hear about us?</label>
-        <select name="choice" id="choice" value={choice} onChange={(e) => setChoice(e.target.value)}>
-          <option value="friend">Friend</option>
-          <option value="socialMedia">Social Media</option>
-          <option value="other">Other</option>
-        </select>
-        <label htmlFor="About">About you</label>
-        <textarea name="about" value={about} id="about" placeholder='Something about you...' onChange={(e) => setAbout(e.target.value)}></textarea>
-        <div className="buttons">
-          <button>SUBMIT</button>
-          <button onClick={resetForm}>RESET</button>
-        </div>
-      </form>
+      <div className="container">
+        <form onSubmit={submitForm}>
+          <InputField type="text" fc={(e)=>setFirstName(e.target.value)}>First Name</InputField>
+          <InputField type="text" fc={(e)=>setLastName(e.target.value)}>Last Name</InputField>
+          <InputField type="email" fc={(e)=>setEmail(e.target.value)}>Email</InputField>
+          <InputField type="tel" fc={(e)=>setPhoneNumber(e.target.value)}>Phone Number</InputField>
+          <InputField type='url' fc={(e)=>setUrl(e.target.value)} >LinkedIn</InputField>
+          <label className='labels' htmlFor="gender">Gender</label>
+          <div className="genders">
+            Male
+            <input type="radio" name="gender" value="male" id="male" checked={gender === "male"} onChange={(e) => setGender(e.target.value)}/>
+            Female
+            <input type="radio" name="gender" value="female" id="female" checked={gender === "female"} onChange={(e) => setGender(e.target.value)}/>
+            Other
+            <input type="radio" name="gender" value="other" id="other" checked={gender === "other"} onChange={(e) => setGender(e.target.value)}/>
+          </div>
+          <label className='labels' htmlFor="Upload resume">Upload Resume*</label>
+          <input type="file" name="Upload Resume"accept="application/pdf" onChange={onFileChange} />
+          <label className='labels' htmlFor="choice">How did you hear about us?</label>
+          <select name="choice" id="choice" value={choice} onChange={(e) => setChoice(e.target.value)}>
+            <option value="friend">Friend</option>
+            <option value="socialMedia">Social Media</option>
+            <option value="other">Other</option>
+          </select>
+          <label className='labels' htmlFor="About">About you</label>
+          <textarea name="about" value={about} id="about" placeholder='Something about you...' onChange={(e) => setAbout(e.target.value)}></textarea>
+          <div className="buttons">
+            <button>SUBMIT</button>
+            <button onClick={resetForm}>RESET</button>
+          </div>
+        </form>
+      </div>
       {pdfUrl && (
         <div>
           <h2>PDF Visualizer</h2>
