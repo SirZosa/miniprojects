@@ -1,13 +1,12 @@
 import { useState} from 'react'
-import './App.css'
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import './App.css'
 
 function App() {
-  const [height, setHeight] = useState(300);
-  const [numPages, setNumPages] = useState<number | null>(null);
+  const [height, setHeight] = useState(800);
+  const [numPages, setNumPages] = useState<number>(1);
   const [pageNumber, setPageNumber] = useState(1);
   const [pdfUrl, setPdfUrl] = useState("");
 
@@ -30,12 +29,15 @@ function App() {
   
   return (
     <>
+    <header>
       <h1>PDF Viewer</h1>
       <input type="file" onChange={onFileChange} />
-      {numPages && (
-        <p>
-          Page {pageNumber} of {numPages}
-          <button
+    </header>
+      <main className="pdf-viewer">
+      <div className="controls">
+        <p>Page: {pageNumber}/{numPages}</p>
+        <div className="button-pair">
+        <button
             disabled={pageNumber <= 1}
             onClick={() => setPageNumber(pageNumber - 1)}
           >
@@ -47,14 +49,16 @@ function App() {
           >
             Next
           </button>
-        </p>
-      )}
-      {numPages && (
+        </div>
+        <div className="button-pair">
+          <button onClick={() => setHeight(height - 50)} disabled={height===300}>-</button>
+          <p>Zoom</p>
+          <button onClick={() => setHeight(height + 50)} disabled={height===1000}>+</button>
+        </div>
         <p>
-          Jump to page:{' '}
+          Jump to page:
           <input
             type="number"
-            value={pageNumber}
             onChange={(event) => {
               const newPageNumber = Number(event.target.value);
               if (newPageNumber > 0 && newPageNumber <= numPages) {
@@ -63,21 +67,15 @@ function App() {
             }}
           />
         </p>
-      )}
-      {numPages && (
-        <p>
-          Zoom:
-          <button onClick={() => setHeight(height - 50)} disabled={height===300}>Zoom Out</button>
-          <button onClick={() => setHeight(height + 50)} disabled={height===1000}>Zoom In</button>
-        </p>
-      )}
+      </div>
       {pdfUrl && (
-        <div>
+        <div className="pdf-container">
           <Document file={pdfUrl} onLoadSuccess={onDocumentLoadSuccess}>
               <Page className="page" key={`page_${pageNumber}`} pageNumber={pageNumber} height={height}/>
           </Document>
         </div>
       )}
+      </main>
     </>
   )
 }
