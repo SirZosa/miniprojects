@@ -1,0 +1,69 @@
+*{
+  box-sizing: border-box;
+}
+
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.canvas{
+  width: 600px;
+  height: 600px;
+  border: 1px solid black;
+}
+
+input{
+  cursor: pointer;
+}
+
+.tool-box{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(69, 69, 251);
+  padding: 0.5rem 1rem;
+  color: #fff;
+}
+
+.pen-size{
+  display: flex;
+  gap: 1rem;
+}
+
+.clear{
+  transform: rotate(45deg);
+}
+
+.clear:hover{
+  transform: rotate(45deg) scale(1.02);
+}
+
+.clear:active{
+  transform: rotate(45deg) scale(0.98);
+}
+
+p{
+  margin: 0;
+  padding: 0;
+  align-self: center;
+  font-size: 1.5rem;
+}
+
+button{
+  border-style: none;
+  background-color: rgb(69, 69, 251);
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+button:hover{
+  transform: scale(1.02);
+}
+
+button:active{
+  transform: scale(0.98);
+}
